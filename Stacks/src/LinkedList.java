@@ -2,11 +2,12 @@ public class LinkedList<T> {
 	/**
 	 * @author Screencap
 	 * https://github.com/t4canty
-	 * Thanks to Timmy for comment style
+	 * Thanks to TJ178 for comment style
+	 * https://github.com/TJ178
 	 */
-	private Node<T> head; //First node in list
-	private Node<T> endNode; //Ending node of the list to save execution time. 
-	private int size; //Size of list.
+	private Node<T> head; 		//First node in list
+	private Node<T> endNode; 	//Ending node of the list to save execution time. 
+	private int size; 			//Size of list.
 	/**
 	 * Creates an empty linkedList. 
 	 */
@@ -38,10 +39,11 @@ public class LinkedList<T> {
 	 */
 	public void add(T data) {
 		//If head is empty, don't bother creating a new node. 
+		
 		if(head.getData() == null) { 
 			head.setData(data);
-			size++;
 			endNode = head;
+			size++;
 		}
 		//Create a new node, and link ending node to the new node. 
 		else {
@@ -76,10 +78,11 @@ public class LinkedList<T> {
 	 * Returns removed element's data.	
 	 */
 	public Node<T> remove() {
+		if(size<= 0) {throw new IndexOutOfBoundsException();}
 		Node<T> temp = head.nextNode; 	//Node in front of head
-		Node <T >tmp = head; 			//Head will be moving, so tmp preserves head for the return.
+		Node<T> tmp = head; 			//Head will be moving, so tmp preserves head for the return.
 		head = null;					//Destroy head
-		head = temp; //Set head to node in front of head. 
+		head = temp; 					//Set head to node in front of head. 
 		size--;  
 		return tmp;
 	}
@@ -92,7 +95,7 @@ public class LinkedList<T> {
 	 */
 	public Node<T> remove(int i) {
 		if(i == 0) { return remove();}
-		else {
+		else if(size>0){
 			Node<T> temp = head; 													//Set scrolling node to the beginning of the list. 
 			if(i >= size || i < 0) { throw new IndexOutOfBoundsException();} 		//Throw exception if index is out of bounds
 			//Scrolling function
@@ -101,6 +104,8 @@ public class LinkedList<T> {
 			temp.nextNode = temp.nextNode.nextNode; 								//Remove the element by unlinking it from the list, and relinking previous node to the node in front.
 			size--;
 			return tmp;
+		}else {
+			throw new IndexOutOfBoundsException();
 		}
 	}
 	/**
