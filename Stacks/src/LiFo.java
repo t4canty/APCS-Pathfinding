@@ -1,4 +1,4 @@
-public class LiFo<dataType> {
+ public class LiFo<dataType> {
 	private Object data[]; //array to hold data
 	private int size;
 	public LiFo() {

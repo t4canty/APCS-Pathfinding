@@ -77,6 +77,7 @@ public class DoublyLinkedList<T> {
 		head.nextNode = tmp;
 		head = tmp;
 		endNode = head;
+		size++;
 		}
 	}
 	/**
@@ -263,6 +264,7 @@ public class DoublyLinkedList<T> {
 	 * Data contained at previous head element.
 	 */
 	public T remove() {
+		if(size <= 0) {throw new IndexOutOfBoundsException();}
 		if(head == endNode) {endNode = head.previousNode;}
 		if(head == startNode) {startNode = head.nextNode;}
 		if(head.nextNode != null) {head.nextNode.previousNode = head.previousNode;}
