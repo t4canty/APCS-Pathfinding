@@ -2,15 +2,14 @@
 	private Object data[]; //array to hold data
 	private int size;
 	public LiFo() {
-		data = new Object[0]; // creating array of size 0 to be resized later
-		size = data.length;
+		data = new Object[50]; // creating array of size 50 to be resized later
+		size = 0;
 	}
 	/**
 	 * @param data
 	 * Takes an array of data and passes it to the stack.
 	 */
 	public LiFo(dataType[] data) {
-		this();
 		this.data = data;
 		size = data.length;
 	}
@@ -24,7 +23,7 @@
 	@SuppressWarnings("unchecked")
 	public String toString() {
 		String s = "";
-		for(Object t : data) {s += (dataType) t;}
+		for(int i = 0; i < size; i++) {s += (dataType) data[i];}
 		return s;
 	}
 	/**
@@ -44,10 +43,8 @@
 		//return null if array size is 0
 		if(size > 0) {
 			dataType tmp = (dataType) data[size-1]; //grab last value
-			Object newArr[] = new Object[size-1]; //create smaller array
-			for(int i = 0; i < newArr.length; i++) { newArr[i] = data[i];} //copy over data from previous array
-			data = newArr;
-			size = data.length;
+			data[size-1] = null;
+			size--;
 			return tmp;
 		}
 		else {return null;}
@@ -58,10 +55,18 @@
 	 *  The value to be added to the stack. 
 	 */
 	public void push(dataType val) {
-		Object[] tmpArr = new Object[size+1]; //create big array
-		for(int i = 0; i < data.length; i++) {tmpArr[i] = data[i];} //copy over data from previous
-		tmpArr[tmpArr.length-1] = val; //add pushed value
-		data = tmpArr;
-		size = data.length;
+		size++;
+		if(size > data.length-1) {  //copy over data from previous
+			Object[] tmpArr = new Object[data.length * 2]; //create big array
+			for(int i = 0; i < data.length; i++) {tmpArr[i] = data[i];}
+			data = tmpArr;
+		}
+		data[size-1] = val; //add pushed value
+	}
+	@SuppressWarnings("unchecked")
+	public void printString() {
+		for(int i = 0; i < size; i++) {
+			System.out.print((dataType) data[i]);
+		}
 	}
 }
