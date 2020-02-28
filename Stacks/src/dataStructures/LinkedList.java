@@ -1,3 +1,4 @@
+package dataStructures;
 public class LinkedList<T> {
 	/**
 	 * @author Screencap

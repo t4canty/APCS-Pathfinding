@@ -1,3 +1,4 @@
+package dataStructures;
 public class slowFiFo<T> {
 	private LiFo<T> stack1; //primary stack
 	private LiFo<T> stack2; //aux stack

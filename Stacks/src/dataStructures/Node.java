@@ -1,3 +1,4 @@
+package dataStructures;
 public class Node <T> {
 	public Node<T> nextNode;
 	public Node<T> previousNode;

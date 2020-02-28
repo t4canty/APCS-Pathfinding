@@ -1,3 +1,4 @@
+package dataStructures;
  public class FiFo<dataType> {
 	private Object data[]; //array to hold data
 	private int size; 
