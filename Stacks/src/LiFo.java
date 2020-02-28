@@ -41,10 +41,10 @@
 	@SuppressWarnings("unchecked")
 	public dataType pop() {
 		//return null if array size is 0
-		if(size > 0) {
+		if(size > 0) { 
 			dataType tmp = (dataType) data[size-1]; //grab last value
-			data[size-1] = null;
-			size--;
+			data[size-1] = null; //set last value to null
+			size--; //decrease size
 			return tmp;
 		}
 		else {return null;}
@@ -55,18 +55,12 @@
 	 *  The value to be added to the stack. 
 	 */
 	public void push(dataType val) {
-		size++;
-		if(size > data.length-1) {  //copy over data from previous
-			Object[] tmpArr = new Object[data.length * 2]; //create big array
-			for(int i = 0; i < data.length; i++) {tmpArr[i] = data[i];}
+		size++; //increase the size of the stack
+		if(size > data.length-1) {  
+			Object[] tmpArr = new Object[data.length * 2]; //create bigger array if needed
+			for(int i = 0; i < data.length; i++) {tmpArr[i] = data[i];}//copy over data from previous
 			data = tmpArr;
 		}
 		data[size-1] = val; //add pushed value
-	}
-	@SuppressWarnings("unchecked")
-	public void printString() {
-		for(int i = 0; i < size; i++) {
-			System.out.print((dataType) data[i]);
-		}
 	}
 }

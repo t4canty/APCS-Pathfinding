@@ -1,6 +1,6 @@
  public class FiFo<dataType> {
 	private Object data[]; //array to hold data
-	private int size;
+	private int size; 
 	private boolean debug = false;
 	public FiFo() {
 		data = new Object[50]; // creating array of size 50 to be resized later
@@ -28,7 +28,7 @@
 		return s;
 	}
 	/**
-	 * Returns the top value of the stack.
+	 * Returns the first value of the stack.
 	 */
 	@SuppressWarnings("unchecked")
 	public dataType peek() {
@@ -36,7 +36,7 @@
 		else {return null;}
 	}
 	/**
-	 * Gets the value at the top of the stack and removes it. 
+	 * Gets the value at the bottom of the stack and removes it. 
 	 * Returns removed value.
 	 */
 	@SuppressWarnings("unchecked")
@@ -44,12 +44,12 @@
 		//return null if array size is 0
 		if(size > 0) {
 			if(debug) {System.out.println("Attempting to grab last value");}
-			dataType tmp = (dataType) data[0]; //grab last value
-			data[0] = null;
+			dataType tmp = (dataType) data[0]; //grab first value
+			data[0] = null; //set the first value to null
 			if(debug) {System.out.println("setting last value to null");}
-			size--;
+			size--; //decrease the size
 			if(debug) {System.out.println("reducing size");}
-			Object[] tmpArr = new Object[size];
+			Object[] tmpArr = new Object[size]; //create a tmp array and copy the current values over
 			if(debug) {System.out.println("creating new array");}
 			for(int i = 1; i < data.length-1; i++) {
 				if(debug) {System.out.println("copying data over at index " + i);}
@@ -67,19 +67,13 @@
 	 *  The value to be added to the stack. 
 	 */
 	public void push(dataType val) {
-		size++;
-		if(size > data.length-1) {  //copy over data from previous
-			Object[] tmpArr = new Object[data.length * 2]; //create big array
-			for(int i = 0; i < data.length; i++) {tmpArr[i] = data[i];}
+		size++; //increase the size of the stack
+		if(size > data.length-1) {  
+			Object[] tmpArr = new Object[data.length * 2]; //create bigger array if needed
+			for(int i = 0; i < data.length; i++) {tmpArr[i] = data[i];}//copy over data from previous
 			data = tmpArr;
 		}
 		data[size-1] = val; //add pushed value
-	}
-	@SuppressWarnings("unchecked")
-	public void printString() {
-		for(int i = 0; i < size; i++) {
-			System.out.print((dataType) data[i]);
-		}
 	}
 }
 
