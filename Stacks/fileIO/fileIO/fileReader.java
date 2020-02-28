@@ -1,11 +1,15 @@
+package fileIO;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+
+import dataStructures.DoublyLinkedList;
 public class fileReader {
 	//==========Variables==========//
 	private boolean debug = false;
-	private DoublyLinkedList<String> data = new DoublyLinkedList<String>(); 
+	private ArrayList<String> data = new ArrayList<String>(); 
 	File f;
 	BufferedReader br;
 	//==========Constructor==========//
@@ -36,7 +40,7 @@ public class fileReader {
 	 * Returns the string of the entire line.
 	 */
 	public String getData(int index) {
-		String s = data.goForward(index, data.PEEK, null); //get the data at index
+		String s = data.get(index); //get the data at index
 		return s;
 	}
 	/**
@@ -44,7 +48,7 @@ public class fileReader {
 	 * Returns size of the file.
 	 */
 	public int getSize() {
-		return data.getSize();
+		return data.size();
 		// TODO Auto-generated method stub
 	}
 }

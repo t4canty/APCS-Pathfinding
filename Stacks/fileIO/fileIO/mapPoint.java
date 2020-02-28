@@ -1,8 +1,10 @@
+package fileIO;
 public class mapPoint {
 	//==========Variables==========//
 	private int col;
 	private int row;
 	private String data;
+	public boolean hasVisited = false;
 	//==========Constructor==========//
 	/**
 	 * Constructs a MapPoint object, which is an object that contains the char at a given row and column. 

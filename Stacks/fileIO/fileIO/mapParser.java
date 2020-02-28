@@ -1,13 +1,17 @@
+package fileIO;
 import java.awt.Dimension;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
+
+import dataStructures.DoublyLinkedList;
 
 public class mapParser {
 //==========Variables==========//
 	private fileReader f; 														//File handler to read from map
 	private boolean debug = false; 												//debug flag
 	private int width, height, numRooms;
-	DoublyLinkedList<mapPoint> locations = new DoublyLinkedList<mapPoint>(); 	//data structure to contain the coordinate objects
+	ArrayList<mapPoint> locations = new ArrayList<mapPoint>(); 	//data structure to contain the coordinate objects
 //==========Constructors==========//
 	/**
 	 * Parses the first room from a file.
@@ -68,8 +72,8 @@ public class mapParser {
 	}
 	private void errorChecking() throws IllegalCharacterException{
 		int countK = 0, countC = 0;
-		for(int i = 0; i < locations.getSize(); i++) {								//Check the DLL for Cs and Ks.
-			String tmp = locations.goForward(i, locations.PEEK, null).getData();
+		for(int i = 0; i < locations.size(); i++) {								//Check the DLL for Cs and Ks.
+			String tmp = locations.get(i).getData();
 			if(tmp.equals("K")) {countK++;}
 			else if(tmp.equals("C")) {countC++;}
 		}
@@ -87,7 +91,7 @@ public class mapParser {
 	 * Throws IllegalCharacterException when parsing, if the map contains illegal characters
 	 */
 	public void reParse(String filename, int index) throws IOException, IllegalCharacterException {
-		locations = new DoublyLinkedList<mapPoint>();
+		locations = new ArrayList<mapPoint>();
 		f = new fileReader(filename);
 		parseInit(index);
 		parse(f, index);
@@ -96,5 +100,12 @@ public class mapParser {
 //==========Getters==========//
 	public int getWidth() {return width;}
 	public int getHeight() {return height;}
+	public int getRooms() {return numRooms;}
 	public Dimension getBounds() {return new Dimension(width, height);}
+	public mapPoint[] toArray() {
+		mapPoint[] mA = new mapPoint[locations.size()];
+		for(int i = 0; i < locations.size(); i++) { mA[i] = locations.get(i);}
+		return mA;
+	}
+	public mapPoint get(int index) {return locations.get(index);}
 }

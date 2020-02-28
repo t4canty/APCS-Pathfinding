@@ -1,3 +1,4 @@
+package fileIO;
 
 public class IllegalCharacterException extends Exception {
 	/**
