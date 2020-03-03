@@ -4,13 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import dataStructures.DoublyLinkedList;
-
 public class mapParser {
 //==========Variables==========//
 	private fileReader f; 														//File handler to read from map
 	private boolean debug = false; 												//debug flag
 	private int width, height, numRooms;
+	private mapPoint startPos;
 	ArrayList<mapPoint> locations = new ArrayList<mapPoint>(); 	//data structure to contain the coordinate objects
 //==========Constructors==========//
 	/**
@@ -47,11 +46,16 @@ public class mapParser {
 		//Begin parsing at a given index, offset by one to account for header of map
 		for(int i = start +1; i <= height + start; i++) {
 			String s = f.getData(i);										//Starting tmp string to extract values from
+			if(s.length() < width) {throw new IllegalCharacterException("Problem when parsing map: String was less than width of the map");}
 			if(debug) {System.out.println("String at row" + i + " " + s);}
 				for(int k = 0; k < width; k++) {
 					String l = s.substring(k, k+1);							//Iterate over the string and extract each char
 					if(debug) {System.out.println("char at row" + i + " and col " +k +" " + l);}
 					if(!l.equals(".") && !l.equals("@") && !l.equals("K") && !l.equals("C") && !l.equals("|")) { throw new IllegalCharacterException("Encountered Illegal Char in file.");}
+					else if(l.equals("K")) {
+						startPos = new mapPoint(l, k, i-start);
+						locations.add(startPos);
+					}
 					else {locations.add(new mapPoint(l, k, i - start));} 	//If input is ok, add the char to the linkedList
 			}
 		}
@@ -101,6 +105,7 @@ public class mapParser {
 	public int getWidth() {return width;}
 	public int getHeight() {return height;}
 	public int getRooms() {return numRooms;}
+	public mapPoint getStartPos() {return startPos;}
 	public Dimension getBounds() {return new Dimension(width, height);}
 	public mapPoint[] toArray() {
 		mapPoint[] mA = new mapPoint[locations.size()];
