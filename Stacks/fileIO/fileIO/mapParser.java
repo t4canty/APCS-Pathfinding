@@ -10,7 +10,7 @@ public class mapParser {
 	private boolean debug = false; 												//debug flag
 	private int width, height, numRooms;
 	private mapPoint startPos;
-	ArrayList<mapPoint> locations = new ArrayList<mapPoint>(); 	//data structure to contain the coordinate objects
+	private ArrayList<mapPoint> locations = new ArrayList<mapPoint>(); 	//data structure to contain the coordinate objects
 //==========Constructors==========//
 	/**
 	 * Parses the first room from a file.
@@ -22,7 +22,42 @@ public class mapParser {
 	 * Throws IllegalCharacterException when parsing, if the map contains illegal characters. 
 	 */
 	public mapParser(String filename) throws IOException, IllegalCharacterException {
-		this(filename, 0);
+		this(filename, false, 0);
+	}
+	/**
+	 * Parses the first room from a file.
+	 * @param filename
+	 * The name of the file to parse, needs to be an absolute path.
+	 * @param debug
+	 * Sets the debug flag.
+	 * @throws IOException
+	 * Throws IOException on FileNotFound or other FileIO errors. 
+	 * @throws IllegalCharacterException
+	 * Throws IllegalCharacterException when parsing, if the map contains illegal characters. 
+	 */
+	public mapParser(String filename, boolean debug) throws IOException, IllegalCharacterException {
+		this(filename, true, 0);
+		this.debug = debug;
+	}
+	/**
+	 * Parses the first room from a file.
+	 * @param filename
+	 * The name of the file to parse, needs to be an absolute path.
+	 * @param index
+	 * The index of which line to start parsing at.
+	 * @param debug
+	 * Sets the debug flag.
+	 * @throws IOException
+	 * Throws IOException on FileNotFound or other FileIO errors. 
+	 * @throws IllegalCharacterException
+	 * Throws IllegalCharacterException when parsing, if the map contains illegal characters. 
+	 */
+	public mapParser(String filename, boolean debug, int index) throws IOException, IllegalCharacterException {
+		this.debug = debug;
+		f = new fileReader(filename);
+		parseInit(index);
+		parse(f, index);
+		errorChecking();
 	}
 	/**
 	 * Parses the room at a given line, will throw an error if the passed in line is not the starting line. 
@@ -36,10 +71,7 @@ public class mapParser {
 	 * Throws IllegalCharacterException when parsing, if the map contains illegal characters. 
 	 */
 	public mapParser(String filename, int index) throws IOException, IllegalCharacterException {
-		f = new fileReader(filename);
-		parseInit(index);
-		parse(f, index);
-		errorChecking();
+		this(filename, false, index);
 	}
 //==========Parsing==========//
 	private void parse(fileReader f, int start) throws IllegalCharacterException {

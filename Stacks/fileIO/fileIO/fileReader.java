@@ -8,19 +8,20 @@ import java.util.ArrayList;
 import dataStructures.DoublyLinkedList;
 public class fileReader {
 	//==========Variables==========//
-	private boolean debug = false;
 	private ArrayList<String> data = new ArrayList<String>(); 
-	File f;
-	BufferedReader br;
+	private File f;
+	private BufferedReader br;
 	//==========Constructor==========//
 	/**
-	 * Creates a FileReader object, and read each line of the file into a DLL.
+	 * Creates a FileReader object, and read each line of the file into an ArrayList.
+	 * @param debug
+	 * Sets debug flag.
 	 * @param filename
 	 * Name of the file, must be an absolute path.
 	 * @throws IOException
 	 * Throws IOException when there is a problem reading the file.
 	 */
-	public fileReader(String filename) throws IOException {
+	public fileReader(String filename, boolean debug) throws IOException {
 		if(debug) {System.out.println("File name:" + filename);}
 		f = new File(filename); 					//open a file object
 		br = new BufferedReader(new FileReader(f)); //read the file to BufferedReader
@@ -31,6 +32,16 @@ public class fileReader {
 			data.add(line);							//read each line and put it into the DLL
 		}
 		br.close();									//Close the BR
+	}
+	/**
+	 * Creates a FileReader object, and read each line of the file into an ArrayList.
+	 * @param filename
+	 * Name of the file, must be an absolute path.
+	 * @throws IOException
+	 * Throws IOException when there is a problem reading the file.
+	 */
+	public fileReader(String filename) throws IOException {
+		this(filename, false);
 	}
 	/**
 	 * Gets the data at an index, and returns the object.
@@ -49,6 +60,5 @@ public class fileReader {
 	 */
 	public int getSize() {
 		return data.size();
-		// TODO Auto-generated method stub
 	}
 }
