@@ -40,4 +40,12 @@ public class mapPoint {
 	 * Returns string representation of the object. 
 	 */
 	public String toString() {return "" + col + "," + row + " '" + data + "'"; }
+	/**
+	 * sets data to new value.
+	 * @param data
+	 * Data to pass into the object.
+	 */
+	public void setData(String data) {
+		this.data = data;
+	}
 }
