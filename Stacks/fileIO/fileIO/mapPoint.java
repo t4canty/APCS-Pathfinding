@@ -1,4 +1,7 @@
 package fileIO;
+
+import java.awt.Point;
+
 public class mapPoint {
 	//==========Variables==========//
 	private int col;
@@ -47,5 +50,13 @@ public class mapPoint {
 	 */
 	public void setData(String data) {
 		this.data = data;
+	}
+	public double getDistance(Point c) {
+		int y = row-c.y;
+		int x = col-c.x;
+		return Math.sqrt((x*x) + (y*y));
+	}
+	public Point toPoint() {
+		return new Point(col, row);
 	}
 }
