@@ -1,11 +1,32 @@
 package fileIO;
-import java.awt.Dimension;
+
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
 
 public class MapParser extends ParseMethods{
 	//==========Constructors==========//
+	/**
+	 * Parses the first room from a file.
+	 * @param filename
+	 * The name of the file to parse, needs to be an absolute path.
+	 * @param index
+	 * The index of which line to start parsing at.
+	 * @param debug
+	 * Sets the debug flag.
+	 * @throws IOException
+	 * Throws IOException on FileNotFound or other FileIO errors. 
+	 * @throws IllegalCharacterException
+	 * Throws IllegalCharacterException when parsing, if the map contains illegal characters. 
+	 */
+	public MapParser(String filename, boolean debug, int index) throws IOException, IllegalCharacterException {
+		this.debug = debug;
+		if(debug) {System.out.println("MapParser Constructor\nMapParser FileReader");}
+		f = new MapFileReader(filename);
+		if(debug) {System.out.println("MapParser Parse()");}
+		parseInit(index);
+		parse(f, index);
+		if(debug) {System.out.println("MapParser errorCheck()");}
+		errorChecking();
+	}
 	/**
 	 * Parses the first room from a file.
 	 * @param filename
@@ -32,29 +53,6 @@ public class MapParser extends ParseMethods{
 	public MapParser(String filename, boolean debug) throws IOException, IllegalCharacterException {
 		this(filename, true, 0);
 		this.debug = debug;
-	}
-	/**
-	 * Parses the first room from a file.
-	 * @param filename
-	 * The name of the file to parse, needs to be an absolute path.
-	 * @param index
-	 * The index of which line to start parsing at.
-	 * @param debug
-	 * Sets the debug flag.
-	 * @throws IOException
-	 * Throws IOException on FileNotFound or other FileIO errors. 
-	 * @throws IllegalCharacterException
-	 * Throws IllegalCharacterException when parsing, if the map contains illegal characters. 
-	 */
-	public MapParser(String filename, boolean debug, int index) throws IOException, IllegalCharacterException {
-		this.debug = debug;
-		if(debug) {System.out.println("MapParser Constructor\nMapParser FileReader");}
-		f = new MapFileReader(filename);
-		if(debug) {System.out.println("MapParser Parse()");}
-		parseInit(index);
-		parse(f, index);
-		if(debug) {System.out.println("MapParser errorCheck()");}
-		errorChecking();
 	}
 	/**
 	 * Parses the room at a given line, will throw an error if the passed in line is not the starting line. 

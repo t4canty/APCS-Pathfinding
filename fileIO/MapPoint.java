@@ -51,15 +51,25 @@ public class MapPoint implements Comparable<MapPoint>{
 	public void setData(String data) {
 		this.data = data;
 	}
+	/**
+	 * Returns the distance this coordinate is away from a point.
+	 * @param c
+	 * Point to compare against.
+	 * @return
+	 * Returns the distance from this coordinate to point c.
+	 */
 	public double getDistance(Point c) {
 		int y = row-c.y;
 		int x = col-c.x;
 		return Math.sqrt((x*x) + (y*y));
 	}
+	/**
+	 * @return
+	 * Returns a Point representation of the coordinate.
+	 */
 	public Point toPoint() {
 		return new Point(col, row);
 	}
-
 	@Override
 	public int compareTo(MapPoint o) {
 		int compareRow=o.getRow();
