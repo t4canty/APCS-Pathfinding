@@ -2,6 +2,7 @@ package algorithm;
 import java.awt.Point;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import com.sun.javafx.css.CalculatedValue;
 
@@ -37,7 +38,18 @@ public class StackAlgorithm {
 		Pather(mp.getStartPos(), NORTH);
 		//addPlus();
 		if(debug) {System.out.println("StackAlgorithm.calculateIdeal()");}
-		path.add(start);
+		//path.add(start);
+		System.out.println("Unsorted array:");
+		for(mapPoint m : path) {
+			System.out.print(m.toString());
+		}
+		System.out.println();
+		Collections.sort(path);
+		System.out.println("Sorted array:");
+		for(mapPoint m : path) {
+			System.out.print(m.toString());
+		}
+		System.out.println();
 		for(int i = path.size()-2; i >= 0; i--) {
 			calculateIdeal(path.get(i), path.get(i + 1), mp.getStartPos().toPoint());
 		}
@@ -92,7 +104,7 @@ public class StackAlgorithm {
 	private void calculateIdeal(mapPoint currentPoint, mapPoint PreviousPoint, Point End) {	
 		if(debug) {System.out.println("Point 1:" + currentPoint.toString() + "Point 2:" + PreviousPoint.toString());
 		System.out.println("Distance 1:" + currentPoint.getDistance(start.toPoint()) + "Distance 2:" + PreviousPoint.getDistance(start.toPoint()));}	
-		if(currentPoint.getDistance(start.toPoint()) < PreviousPoint.getDistance(start.toPoint()) && currentPoint.getRow() == PreviousPoint.getRow()) {
+		if(currentPoint.getDistance(start.toPoint()) < PreviousPoint.getDistance(start.toPoint())) {
 			if(debug) {System.out.println(currentPoint.getDistance(start.toPoint()) <= PreviousPoint.getDistance(start.toPoint()));}
 			bestpath.add(currentPoint);
 		}
