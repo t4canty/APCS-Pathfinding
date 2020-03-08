@@ -5,15 +5,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import dataStructures.DoublyLinkedList;
-public class fileReader {
+public class MapFileReader {
 	//==========Variables==========//
 	private ArrayList<String> data = new ArrayList<String>(); 
 	private File f;
 	private BufferedReader br;
 	//==========Constructor==========//
 	/**
-	 * Creates a FileReader object, and read each line of the file into an ArrayList.
+	 * Creates a MapFileReader object, and read each line of the file into an ArrayList.
 	 * @param debug
 	 * Sets debug flag.
 	 * @param filename
@@ -21,7 +20,7 @@ public class fileReader {
 	 * @throws IOException
 	 * Throws IOException when there is a problem reading the file.
 	 */
-	public fileReader(String filename, boolean debug) throws IOException {
+	public MapFileReader(String filename, boolean debug) throws IOException {
 		if(debug) {System.out.println("File name:" + filename);}
 		f = new File(filename); 					//open a file object
 		br = new BufferedReader(new FileReader(f)); //read the file to BufferedReader
@@ -34,13 +33,13 @@ public class fileReader {
 		br.close();									//Close the BR
 	}
 	/**
-	 * Creates a FileReader object, and read each line of the file into an ArrayList.
+	 * Creates a MapFileReader object, and read each line of the file into an ArrayList.
 	 * @param filename
 	 * Name of the file, must be an absolute path.
 	 * @throws IOException
 	 * Throws IOException when there is a problem reading the file.
 	 */
-	public fileReader(String filename) throws IOException {
+	public MapFileReader(String filename) throws IOException {
 		this(filename, false);
 	}
 	/**
