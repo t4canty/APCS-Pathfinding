@@ -3,9 +3,6 @@ import java.awt.Point;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-
-import com.sun.javafx.css.CalculatedValue;
-
 import dataStructures.LiFo;
 import fileIO.IllegalCharacterException;
 import fileIO.mapParser;
