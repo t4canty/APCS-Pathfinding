@@ -7,6 +7,7 @@ public class MapPoint implements Comparable<MapPoint>{
 	private int col;
 	private int row;
 	private String data;
+	private int numRun = 0;
 	public boolean hasVisited = false;
 	//==========Constructor==========//
 	/**
@@ -69,6 +70,12 @@ public class MapPoint implements Comparable<MapPoint>{
 	 */
 	public Point toPoint() {
 		return new Point(col, row);
+	}
+	public void setRun(int num) {
+		this.numRun = num;
+	}
+	public int getRun() {
+		return numRun;
 	}
 	@Override
 	public int compareTo(MapPoint o) {
