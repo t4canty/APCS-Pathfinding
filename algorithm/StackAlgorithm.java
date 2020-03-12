@@ -18,6 +18,7 @@ public class StackAlgorithm {
 	private final int EAST = 2;
 	private final int WEST = 3;
 	private MapPoint start;
+	private int maxRuns;
 	private MapPoint[][] map;
 	private ParseMethods mp;
 	private boolean debug = false;
@@ -30,6 +31,7 @@ public class StackAlgorithm {
 		if(isCoord) {mp = new CoordParser(filename, debug, index);}
 		else{mp = new MapParser(filename, debug, index);}
 		map = new MapPoint[mp.getHeight()][mp.getWidth()];
+		maxRuns = mp.getHeight() * mp.getWidth();
 		for(MapPoint m : mp.toArray()) {
 			if(debug) {System.out.println("Adding " + m.getData() + " at: " + m.getRow() + "," + m.getCol());}
 			map[m.getRow()-1][m.getCol()] = m;
@@ -39,35 +41,20 @@ public class StackAlgorithm {
 			for(MapPoint[] sa : map) {for(MapPoint s : sa) {System.out.print(s.toString());}}
 		}
 		Pather(mp.getStartPos(), NORTH, 0);
-		//addPlus();
-		if(debug) {System.out.println("StackAlgorithm.calculateIdeal()");}
-		//path.add(start);
-		if(false) {
-			System.out.println("Unsorted array:");
-			for(MapPoint m : path) {
-				System.out.print(m.toString());
-			}
-			System.out.println();
-			Collections.sort(path);
-			System.out.println("Sorted array:");
-			for(MapPoint m : path) {
-				System.out.print(m.toString());
-			}
-			System.out.println();
-		}
-		//		for(int i = path.size()-2; i >= 0; i--) {
-		//			calculateIdeal(path.get(i), path.get(i + 1), mp.getStartPos().toPoint());
-		//		}
-		//path = bestpath;
 		for(MapPoint[] ma : map) {for(MapPoint m : ma) {m.hasVisited = false;}}
-		stack = new LiFo<MapPoint>();
-		System.out.println(didWork(start, 1, mp.getStartPos(), 0));
-		System.out.println(stack.toString());
-		while(stack.peek() != null) {
-			MapPoint tmp = stack.pop();
-			map[tmp.getRow()-1][tmp.getCol()].setData("&");
+		betterPath(start, 1);
+		ArrayList<MapPoint> tr = new ArrayList<MapPoint>();
+		for(MapPoint m : bestpath) {
+			for(MapPoint m2 : bestpath) {
+				if(m.toPoint().equals(m2.toPoint()) && m2.getRun() > m.getRun() && m2 != m) {
+					System.out.println("removing point" + m.toString());
+					tr.add(m);}
+			}
 		}
-		//addPlus();
+		for(MapPoint m : tr) {bestpath.remove(m);}
+		path = bestpath;
+
+		addPlus();
 	}
 	public StackAlgorithm(String filename, boolean debug, boolean isCoord) throws IOException, IllegalCharacterException {
 		this(filename, debug, 0, isCoord);
@@ -81,6 +68,7 @@ public class StackAlgorithm {
 	private void Pather(MapPoint M, int d, int numRun) {
 		if(d > 4) {d = 0;}
 		if(debug) {System.out.println("Testing point" + M.toString() + "With direction of" + d);}
+		M.setRun(numRun);
 		MapPoint tmp;
 		if(!M.hasVisited && !M.getData().equals("@")) {
 			if(M.getRow() != 1 && d != SOUTH) {
@@ -100,10 +88,10 @@ public class StackAlgorithm {
 				if(!tmp.hasVisited) {stack.push(tmp);}
 			}
 		}
-		if(M.getData().equals("C")) {M.setRun(numRun);start = M; if(debug) {System.out.println("Found cake.");}}
+		if(M.getData().equals("C")) {start = M; if(debug) {System.out.println("Found cake.");}}
 		else if(M.getData().equals(".") && M.hasVisited == false) {
 			if(debug) {System.out.println("Found empty unvisited square.");}
-			M.setRun(numRun);
+			//M.setRun(numRun);
 			path.add(M);
 			M.hasVisited = true;
 			Pather(stack.pop(), d, numRun + 1);
@@ -115,6 +103,33 @@ public class StackAlgorithm {
 		}
 
 	}
+	private boolean betterPath(MapPoint M, int numRun) {
+		if(M.getData().equals("K")) {bestpath.add(M); return true;}
+		else if(numRun <= maxRuns) {
+			ArrayList<MapPoint> ms = new ArrayList<MapPoint>();
+			if(M.getRow() != 1 && !map[M.getRow()-2][M.getCol()].hasVisited) {ms.add(map[M.getRow()-2][M.getCol()]);}
+			if(M.getRow() != map.length && !map[M.getRow()][M.getCol()].hasVisited ) {ms.add(map[M.getRow()][M.getCol()]);}
+			if(M.getCol() != 0 && !map[M.getRow()-1][M.getCol()-1].hasVisited ) {ms.add(map[M.getRow()-1][M.getCol()-1]);}
+			if(M.getCol() != map[0].length-1 && !map[M.getRow()-1][M.getCol()+1].hasVisited) {ms.add(map[M.getRow()-1][M.getCol()+1]);}
+			boolean notEnd = false;
+			for(MapPoint m : ms) {
+				System.out.println("Testing point " + m.toString() + "With run " + numRun);
+				m.setRun(numRun);
+				if(!m.getData().equals("@") && !m.hasVisited) {notEnd = true; m.hasVisited = true; bestpath.add(m); betterPath(m, numRun+1);}
+				else {m.hasVisited = true;}
+			}
+			System.out.println(notEnd);
+			return notEnd;
+			}
+			
+		return false;
+	}
+	
+	
+
+
+
+
 	private boolean didWork(MapPoint M, int d, MapPoint end, int runNum) {
 		if(d > 4) {d = 0;}
 		runNum++;
@@ -139,7 +154,7 @@ public class StackAlgorithm {
 			stack.push(M);
 			return true;
 		}
-			return false;
+		return false;
 	}
 	private boolean testPoints(MapPoint N, MapPoint E, MapPoint S, MapPoint W, MapPoint end, int runNum) {
 		if(testPoint(N, end, runNum, NORTH)) {System.out.println("Testing N");return true;}
@@ -162,7 +177,7 @@ public class StackAlgorithm {
 		}
 		return false;
 	}
-	
+
 
 	private void calculateIdeal(MapPoint currentPoint, MapPoint PreviousPoint, Point End) {	
 		if(debug) {System.out.println("Point 1:" + currentPoint.toString() + "Point 2:" + PreviousPoint.toString());
@@ -177,16 +192,25 @@ public class StackAlgorithm {
 		if(debug) {System.out.println("Setting points to plus:");}
 		for(MapPoint mp : path) {
 			if(debug) {System.out.print(mp.toString());}
-			map[mp.getRow()-1][mp.getCol()].setData("+");
+			map[mp.getRow()-1][mp.getCol()].setData("" + mp.getRun());
 		}
 		map[start.getRow()-1][start.getCol()].setData("C");
 		if(debug) {System.out.println();}
 	}
-	
-	
+
+
 	public String getMap() {
 		String s = "";
+		if(debug) {
+			s += " ";
+			for(int i = 0; i < map.length; i++) {
+				s += i;
+			}
+			s += "\n";
+		}
+		int r = 1;
 		for(MapPoint[] ma : map) {
+			if(debug) {s += r; r++;}
 			for(MapPoint m : ma) {
 				s += m.getData();
 			}

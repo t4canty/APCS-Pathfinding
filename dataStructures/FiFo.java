@@ -37,6 +37,17 @@ package dataStructures;
 		else {return null;}
 	}
 	/**
+	 * @param index
+	 * Index of data.
+	 * @return
+	 * Returns data at index.
+	 */
+	public dataType peek(int index) {
+		if(index > size-1 || index < 0) {throw new IndexOutOfBoundsException();}
+		if(size > 0) {return (dataType) data[index];}
+		else {return null;}
+	}
+	/**
 	 * Gets the value at the bottom of the stack and removes it. 
 	 * Returns removed value.
 	 */
