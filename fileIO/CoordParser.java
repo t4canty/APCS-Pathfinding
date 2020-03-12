@@ -81,6 +81,7 @@ public class CoordParser extends ParseMethods {
 				if(debug) {System.out.println("Parsed " + tmp.toString() + "at line " + i);}
 				locations.add(tmp);											
 				if(d.equals("K")) {startPos = tmp;}							//if the point is the start, set startPos to it.
+				else if(d.equals("C")) {endPos = tmp;}
 			} catch (Exception e) {
 				System.err.println("Error when parsing, see below.");
 				e.printStackTrace();

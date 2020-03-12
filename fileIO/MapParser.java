@@ -82,6 +82,9 @@ public class MapParser extends ParseMethods{
 				else if(l.equals("K")) {
 					startPos = new MapPoint(l, k, i-start);
 					locations.add(startPos);
+				}else if(l.equals("C")) {
+					endPos = new MapPoint(l, k, i-start);
+					locations.add(endPos);
 				}
 				else {locations.add(new MapPoint(l, k, i - start));} 	//If input is ok, add the char to the linkedList
 			}

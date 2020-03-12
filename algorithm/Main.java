@@ -79,7 +79,8 @@ public class Main {
 				//QueueAlgorithm q = new QueueAlgorithm(args[0], isCoordinate);
 				break;
 			case OPTIMAL:
-				//OptimalAlgorithm o = new OptimalAlgorithm(args[0], isCoordinate);
+				OptimalPath o = new OptimalPath(args[0],debug, index, isCoordinate);
+				System.out.println(o.getMap());
 				break;
 			default:
 				throw new IllegalArgumentException("Error: Algorithm not specified");

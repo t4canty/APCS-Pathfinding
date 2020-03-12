@@ -12,6 +12,7 @@ public abstract class ParseMethods {
 	protected int width, height, numRooms;											//First 3 numbers at the start of the map
 	protected MapPoint startPos;													//Stores the starting "K"
 	protected ArrayList<MapPoint> locations = new ArrayList<MapPoint>(); 			//data structure to contain the coordinate objects
+	protected MapPoint endPos;
 	//==========Parent Functions==========//
 	/**
 	 * A method designed to check for if there is more than one cake/Kirby.
@@ -95,6 +96,11 @@ public abstract class ParseMethods {
 	 * Returns the map point of "K".
 	 */
 	public MapPoint getStartPos() {return startPos;}
+	/**
+	 * @return
+	 * Returns the map point of "C".
+	 */
+	public MapPoint getEndPos() {return endPos;}
 	/**
 	 * @return
 	 * Returns the dimensions of the parsed map.
