@@ -2,9 +2,6 @@ package algorithm;
 import java.awt.Point;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-
-import dataStructures.FiFo;
 import dataStructures.LiFo;
 import fileIO.CoordParser;
 import fileIO.IllegalCharacterException;
@@ -43,18 +40,18 @@ public class StackAlgorithm {
 		Pather(mp.getStartPos(), NORTH, 0);
 		for(MapPoint[] ma : map) {for(MapPoint m : ma) {m.hasVisited = false;}}
 		betterPath(start, 1);
-		ArrayList<MapPoint> tr = new ArrayList<MapPoint>();
-		for(MapPoint m : bestpath) {
-			for(MapPoint m2 : bestpath) {
-				if(m.toPoint().equals(m2.toPoint()) && m2.getRun() > m.getRun() && m2 != m) {
-					System.out.println("removing point" + m.toString());
-					tr.add(m);}
-			}
-		}
-		for(MapPoint m : tr) {bestpath.remove(m);}
+		//		ArrayList<MapPoint> tr = new ArrayList<MapPoint>();
+		//		for(MapPoint m : bestpath) {
+		//			for(MapPoint m2 : bestpath) {
+		//				if(m.toPoint().equals(m2.toPoint()) && m2.getRun() > m.getRun() && m2 != m) {
+		//					System.out.println("removing point" + m.toString());
+		//					tr.add(m);}
+		//			}
+		//		}
+		//		for(MapPoint m : tr) {bestpath.remove(m);}
 		path = bestpath;
 
-		addPlus();
+		addPlus(false);
 	}
 	public StackAlgorithm(String filename, boolean debug, boolean isCoord) throws IOException, IllegalCharacterException {
 		this(filename, debug, 0, isCoord);
@@ -103,29 +100,29 @@ public class StackAlgorithm {
 		}
 
 	}
-	private boolean betterPath(MapPoint M, int numRun) {
-		if(M.getData().equals("K")) {bestpath.add(M); return true;}
-		else if(numRun <= maxRuns) {
+	private void betterPath(MapPoint M, int numRun) {
+		if(numRun <= 4) {
 			ArrayList<MapPoint> ms = new ArrayList<MapPoint>();
 			if(M.getRow() != 1 && !map[M.getRow()-2][M.getCol()].hasVisited) {ms.add(map[M.getRow()-2][M.getCol()]);}
-			if(M.getRow() != map.length && !map[M.getRow()][M.getCol()].hasVisited ) {ms.add(map[M.getRow()][M.getCol()]);}
+			if(M.getRow() != map.length && !map[M.getRow()][M.getCol()].hasVisited) {ms.add(map[M.getRow()][M.getCol()]);}
 			if(M.getCol() != 0 && !map[M.getRow()-1][M.getCol()-1].hasVisited ) {ms.add(map[M.getRow()-1][M.getCol()-1]);}
 			if(M.getCol() != map[0].length-1 && !map[M.getRow()-1][M.getCol()+1].hasVisited) {ms.add(map[M.getRow()-1][M.getCol()+1]);}
-			boolean notEnd = false;
+			int tmp = numRun;
 			for(MapPoint m : ms) {
-				System.out.println("Testing point " + m.toString() + "With run " + numRun);
-				m.setRun(numRun);
-				if(!m.getData().equals("@") && !m.hasVisited) {notEnd = true; m.hasVisited = true; bestpath.add(m); betterPath(m, numRun+1);}
+				System.out.println("Testing point " + m.toString() + "With run " + tmp);
+				m.setRun(tmp);
+				if(m.getData().equals("K")) bestpath.add(m);
+				else if(!m.getData().equals("@") && m.hasVisited == false) {
+					m.hasVisited = true; 
+					bestpath.add(m);
+					betterPath(m, tmp + 1);
+				}
 				else {m.hasVisited = true;}
 			}
-			System.out.println(notEnd);
-			return notEnd;
-			}
-			
-		return false;
+		}
 	}
-	
-	
+
+
 
 
 
@@ -188,14 +185,45 @@ public class StackAlgorithm {
 		}
 
 	}
-	private void addPlus() {
+	private void addPlus(boolean isPlus) {
 		if(debug) {System.out.println("Setting points to plus:");}
+		String s;
 		for(MapPoint mp : path) {
 			if(debug) {System.out.print(mp.toString());}
-			map[mp.getRow()-1][mp.getCol()].setData("" + mp.getRun());
+			if(isPlus) {
+				s = "+";
+			}
+			else {
+				if(mp.getRun() >= 10) {s = "&";}
+				else {s = "" + mp.getRun();}
+			}
+			map[mp.getRow()-1][mp.getCol()].setData(s);
 		}
 		map[start.getRow()-1][start.getCol()].setData("C");
 		if(debug) {System.out.println();}
+	}
+
+	public String getTrue() {
+		if(debug) {System.out.println("Setting points to plus:");}
+		String s = "";
+		if(debug) {
+			s += " ";
+			for(int i = 0; i < map.length; i++) {
+				s += i;
+			}
+			s += "\n";
+		}
+		int r = 1;
+		for(MapPoint[] ma : map) {
+			if(debug) {s += r; r++;}
+			for(MapPoint mp : ma) {
+				if(map[mp.getRow()-1][mp.getCol()].getData().equals("@")) s += "@";
+				else if(map[mp.getRow()-1][mp.getCol()].hasVisited) s += "T";
+				else s += "F";
+			}
+			s += "\n";
+		}
+		return s;
 	}
 
 
