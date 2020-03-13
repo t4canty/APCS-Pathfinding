@@ -44,7 +44,8 @@ public class OptimalPath extends ParentAlgortithm{
 		}
 		start = mp.getEndPos();													//getting startPos.
 		betterPath(start, 1, NORTH);											//Pathing
-		addPlus(false, path);													//Set points to their runNumber (Change to optimal points later)
+		removeExcess(mp.getStartPos(), path);
+		addPlus(!debug, path);													//Set points to their runNumber (Change to optimal points later)
 	}
 	/**
 	 * Sets up an OptimalPath using a pre-existing map, and then stores it's path in an ArrayList.
@@ -74,7 +75,7 @@ public class OptimalPath extends ParentAlgortithm{
 			if(M.getCol() != map[0].length-1 && !map[M.getRow()-1][M.getCol()+1].hasVisited && d != EAST) {ms.add(map[M.getRow()-1][M.getCol()+1]);}
 			//Iterate over the points and test them.
 			for(MapPoint m : ms) {
-				if(debug) System.out.println("Testing point " + m.toString() + "With run " + numRun);
+				if(debug) System.out.println("Testing point " + m.toString() + "With run " + numRun + "and Direction " + d);
 				if(!m.hasVisited) m.setRun(numRun);								//Set run to NumRun if not visited.
 				if(m.getData().equals("K")) path.add(m);						//End branch if K is found.
 				else if(!m.getData().equals("@") && m.hasVisited == false) {	//If an open, unvisited spot is found, add it to the path and start a new branch.

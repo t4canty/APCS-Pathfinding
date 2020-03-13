@@ -87,4 +87,22 @@ public abstract class ParentAlgortithm {
 		}
 		return s;
 	}
+	protected void removeExcess(MapPoint start, ArrayList<MapPoint> path) {
+		if(debug) System.out.println("Remove");
+		ArrayList<MapPoint> tr = new ArrayList<MapPoint>();
+		for(MapPoint m : path) {
+			for(MapPoint m2 : path) {
+				if(m.getRun() == m2.getRun() && !m.equals(m2)) {
+					if(m.getDistance(start.toPoint()) < m2.getDistance(start.toPoint())) {
+						tr.add(m2);
+					}else {
+						tr.add(m);
+					}
+				}else if (m.getRun() > start.getRun()) {
+					tr.add(m);
+				}
+			}
+		}
+		for(MapPoint m : tr) {path.remove(m);}
+	}
 }

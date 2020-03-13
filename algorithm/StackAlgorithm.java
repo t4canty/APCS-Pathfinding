@@ -33,7 +33,9 @@ public class StackAlgorithm extends ParentAlgortithm{
 		if(debug) System.out.println("Begin optimize");				
 		o = new OptimalPath(start, map, debug);							//Find the optimal path.
 		path = o.getPath();
-		addPlus(false, path);											//Set to the points to plus. (Change to optimal path to plus later)
+		removeExcess(mp.getStartPos(), path);
+		addPlus(!debug, path);											//Set to the points to plus. (Change to optimal path to plus later)
+		
 	}
 	public StackAlgorithm(String filename, boolean debug, boolean isCoord) throws IOException, IllegalCharacterException {
 		this(filename, debug, 0, isCoord);
@@ -80,7 +82,4 @@ public class StackAlgorithm extends ParentAlgortithm{
 		}
 
 	}
-
-
 }
-
