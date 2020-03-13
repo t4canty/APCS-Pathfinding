@@ -6,20 +6,27 @@ import fileIO.MapPoint;
 import fileIO.ParseMethods;
 
 public abstract class ParentAlgortithm {
+	//==========Variables==========//
 	protected final int NORTH = 0;
 	protected final int SOUTH = 1;
 	protected final int EAST = 2;
 	protected final int WEST = 3;
 	protected MapPoint start;
-	protected static int maxRuns;
 	protected MapPoint[][] map;
 	protected ParseMethods mp;
 	protected boolean debug = false;
-	protected ArrayList<MapPoint> path = new ArrayList<MapPoint>();
-	public void addPlus(boolean isPlus) {
+	//==========Method==========//
+	/**
+	 * Sets the points on the path to plus.
+	 * @param isPlus
+	 * Specifies whether or not the points should be set to plus or their RunNumber.
+	 * @param path
+	 * The path.
+	 */
+	protected void addPlus(boolean isPlus, ArrayList<MapPoint> path) {
 		if(debug) {System.out.println("Setting points to plus:");}
-		String s;
-		for(MapPoint mp : path) {
+		String s;												//String to set mapPoints to
+		for(MapPoint mp : path) {								//Iterate over the path and set the data to s
 			if(debug) {System.out.print(mp.toString());}
 			if(isPlus) {
 				s = "+";
@@ -30,48 +37,51 @@ public abstract class ParentAlgortithm {
 			}
 			map[mp.getRow()-1][mp.getCol()].setData(s);
 		}
-		map[start.getRow()-1][start.getCol()].setData("C");
+		map[start.getRow()-1][start.getCol()].setData("C");	  //Make sure the the cake is visible.
 		if(debug) {System.out.println();}
 	}
-
+	//==========Getters==========//
 	public String getTrue() {
-		if(debug) {System.out.println("Setting points to plus:");}
-		String s = "";
-		if(debug) {
+		String s = "";											//String to return.
+		if(debug) {												//Set up row and column numbers.
 			s += " ";
 			for(int i = 0; i < map.length; i++) {
 				s += i;
 			}
 			s += "\n";
 		}
-		int r = 1;
-		for(MapPoint[] ma : map) {
-			if(debug) {s += r; r++;}
+		int r = 1;												//Row counter.
+		for(MapPoint[] ma : map) {								//Iterate over the map and get hasVisited.
+			if(debug) {s += r; r++;}							//Increase row counter every row.
 			for(MapPoint mp : ma) {
-				if(map[mp.getRow()-1][mp.getCol()].getData().equals("@")) s += "@";
-				else if(map[mp.getRow()-1][mp.getCol()].hasVisited) s += "T";
-				else s += "F";
+				if(map[mp.getRow()-1][mp.getCol()].getData().equals("@")) s += "@";	//Draw the walls.
+				else if(map[mp.getRow()-1][mp.getCol()].hasVisited) s += "T";	
+				else s += ".";
 			}
 			s += "\n";
 		}
 		return s;
 	}
 
-
+	/**
+	 * Returns a string representation of the map.
+	 * @return
+	 * Returns the map.
+	 */
 	public String getMap() {
-		String s = "";
-		if(debug) {
+		String s = "";											//String to return.
+		if(debug) {												//Set up row and column numbers.
 			s += " ";
 			for(int i = 0; i < map.length; i++) {
 				s += i;
 			}
 			s += "\n";
 		}
-		int r = 1;
+		int r = 1;												//Row counter.
 		for(MapPoint[] ma : map) {
 			if(debug) {s += r; r++;}
-			for(MapPoint m : ma) {
-				s += m.getData();
+			for(MapPoint m : ma) {								//Increase row counter every row.
+				s += m.getData();								//Add the point's data.
 			}
 			s += "\n";
 		}

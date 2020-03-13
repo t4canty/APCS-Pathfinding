@@ -2,7 +2,7 @@ package fileIO;
 
 import java.awt.Point;
 
-public class MapPoint implements Comparable<MapPoint>{
+public class MapPoint{
 	//==========Variables==========//
 	private int col;
 	private int row;
@@ -71,15 +71,19 @@ public class MapPoint implements Comparable<MapPoint>{
 	public Point toPoint() {
 		return new Point(col, row);
 	}
+	/**
+	 * Sets the run to the specified run.
+	 * @param num
+	 * Number of run.
+	 */
 	public void setRun(int num) {
 		this.numRun = num;
 	}
+	/**
+	 * @return
+	 * Returns the run of this point.
+	 */
 	public int getRun() {
 		return numRun;
-	}
-	@Override
-	public int compareTo(MapPoint o) {
-		int compareRow=o.getRow();
-		return row-compareRow;
 	}
 }

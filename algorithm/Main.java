@@ -6,6 +6,7 @@ import java.io.IOException;
 import fileIO.IllegalCharacterException;
 
 public class Main {
+	//==========Variables==========//
 	private final static int STACK = 1;
 	private final static int QUEUE = 2;
 	private final static int OPTIMAL = 3;
@@ -15,43 +16,44 @@ public class Main {
 	private static boolean time = false;
 	private static boolean debug = false;
 	private static int algorithm = -1;
+	//==========Main==========//
 	public static void main(String[] args) throws FileNotFoundException {
-		if(args.length == 0) {help();}
-		File tmp = new File(args[0]);
+		if(args.length == 0) {help();}												//If there are not arguments, print help.
+		File tmp = new File(args[0]);												//Check if the file provided exists. 
 		if(!tmp.exists()) { throw new FileNotFoundException();}
-		for(int i = 1; i < args.length; i++) {
-			switch (args[i]) {
-			case "--Stack":
+		for(int i = 1; i < args.length; i++) {										//Handle arguments in args. 
+			switch (args[i].toLowerCase()) {
+			case "--stack":
 				if(algorithm != -1) {throw new IllegalArgumentException("More than one algorithm specified.");}
 				else { algorithm = STACK;}
 				break;
-			case "--Queue":
+			case "--queue":
 				if(algorithm != -1) {throw new IllegalArgumentException("More than one algorithm specified.");}
 				else { algorithm = QUEUE;}
 				break;
-			case "--Opt":
+			case "--opt":
 				if(algorithm != -1) {throw new IllegalArgumentException("More than one algorithm specified.");}
 				else { algorithm = OPTIMAL;}
 				break;
-			case "--Time":
+			case "--time":
 				time = true;
 				break;
-			case "--Incoordinate":
+			case "--incoordinate":
 				isCoordinate = true;
 				break;
-			case "--Outcoordinate":
+			case "--outcoordinate":
 				outIsCoordinate = true;
 				break;
-			case "--Debug":
+			case "--debug":
 				debug = true;
 				break;
-			case "--Help":
+			case "--help":
 				help();
 				break;
-			case "--Bunny":
+			case "--bunny":
 				System.out.println("\n/)___(\\ \n(='.'=)\n(\")_(\")\n"); //Credit to Hak5 for this
 				break;
-			case "--Index":
+			case "--index":
 				try {
 					index = Integer.parseInt(args[i+1]);
 					i++;
@@ -67,13 +69,12 @@ public class Main {
 			}
 		}
 		long startTime = 0;
-		if(time) {startTime = System.currentTimeMillis();}
+		if(time) {startTime = System.currentTimeMillis();}								//Gets time for time testing.
 		try {
-			switch (algorithm) {
-			case STACK:
+			switch (algorithm) {														//Attempts the algorithm specified by the flag.
+			case STACK:		
 				StackAlgorithm s = new StackAlgorithm(args[0], debug, index, isCoordinate);
 				System.out.println(s.getMap());
-				System.out.println(s.getTrue());
 				break;
 			case QUEUE:
 				//QueueAlgorithm q = new QueueAlgorithm(args[0], isCoordinate);
@@ -83,14 +84,14 @@ public class Main {
 				System.out.println(o.getMap());
 				break;
 			default:
-				throw new IllegalArgumentException("Error: Algorithm not specified");
+				throw new IllegalArgumentException("Error: Algorithm not specified");	//Throws error if algorithm not specified.
 			}
-		} catch (IOException | IllegalCharacterException e) {
+		} catch (IOException | IllegalCharacterException e) {							//Error handling.
 			e.printStackTrace();
 		}
 		if(time) {System.out.println("Time to completion:" + (System.currentTimeMillis() - startTime));}
 	}
-
+	//==========Help Method==========//
 	private static void help() {
 		System.out.println("A maze solving algorithm created by Screencap.\nhttps://github.com/t4canty");
 		System.out.println("Usage: .\\Pather.jar <mapFile> [--Stack|--Queue|--Opt] [--Time] [--Incoordinate] [--Outcoordinate] [--Help] [--Debug]");
